@@ -76,6 +76,7 @@ typedef struct _field_info
     char         nested_str_name[MAX_STRUCTURE_NAME_SIZE];
 } field_info_t;
 
+
 typedef struct _struct_db_rec_t struct_db_rec_t;
 
 /** Store the information of a struct with 'n' fields */
@@ -96,19 +97,56 @@ typedef struct _struct_db_t
 } struct_db_t;
 
 
+typedef struct _object_db_rec_ object_db_rec_t;
+
+/** Store the information of an object that was allocated */
+struct _object_db_rec_
+{
+    void        *ptr;        // Pointer to the object that was allocated
+    unsigned int units;      // Number of objects of this type
+    struct_db_rec_t *pRec;   // Pointer to the structure record
+    object_db_rec_t *pNext;  // Pointer to the next structure in the list
+};
+
+/** Store the information of all the objects that were allocated */
+typedef struct _object_db_
+{
+    object_db_rec_t *pHead; // Pointer to the head
+    struct_db_t     *pDB;   // Pointer to the structure database
+    unsigned int     count; // Number of objects
+} object_db_t;
+
 /** ------------------------------------ Print functions ------------------------------------ */ 
 
 /** Print the information of a structure record */
-MD_API void print_structure_rec(struct_db_rec_t *struct_rec);
+void print_structure_rec(struct_db_rec_t *struct_rec);
 
 /** Print the information of all the structures in the structure database */
-MD_API void print_structure_db(struct_db_t *struct_db);
+void print_structure_db(struct_db_t *struct_db);
 
+/** Print the information of an object record */
+void print_object_rec(object_db_rec_t *object_rec, int i);
+
+/** Print the information of all the objects in the object database */
+void print_object_db(object_db_t *object_db);
 
 /** ------------------------------------ DB functions --------------------------------------- */ 
 
 /** Add a structure record to the structure database */
-MD_API int add_to_struct_db(struct_db_t *struct_db, struct_db_rec_t *struct_rec);
+int add_to_struct_db(struct_db_t *struct_db, struct_db_rec_t *struct_rec);
+
+
+/** ------------------------------------ MLD functions --------------------------------------- */
+
+/**
+ * Allocate memory and initialize the structure database.
+ * @param struct_db Pointer to the structure database
+ * @param struct_name Name of the structure
+ * @param units Number of objects to allocate
+ * @return Pointer to the structure database
+ */
+void* xcalloc(object_db_t *object_db, char *struct_name, int units);
+
 
 #endif // MLD_H
 
