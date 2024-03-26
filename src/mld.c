@@ -22,17 +22,17 @@ print_structure_rec(struct_db_rec_t *rec)
 
     printf("+------------------------------------------------------+\n");
     printf("| %-20s | size = %-8d | #flds = %-3d |\n", rec->struct_name, rec->ds_size, rec->n_fields);
-    printf("|------------------------------------------------------|\n");
-    printf("| %-20s | %-15s | %-11s |\n", "Field Name", "Data Type", "Size");
-    printf("|------------------------------------------------------|\n");
+    printf("+------------------------------------------------------+------------------------------------------------------------------------------------------+\n");
     for (int i = 0; i < rec->n_fields; i++)
     {
-        printf("| %-20s | %-15s | %-11d |\n",
-               rec->pFields[i].fname,
-               DATA_TYPE[rec->pFields[i].dtype],
-               rec->pFields[i].size);
+
+        field_info_t *field = &rec->pFields[i];
+        printf("  %-20s |", " ");
+        printf("%-3d %-20s | dtype = %-15s | size = %-5d | offset = %-6d|  nstructname = %-20s  |\n",
+                i, field->fname, DATA_TYPE[field->dtype], field->size, field->offset, field->nested_str_name);
+        printf("  %-20s |", "");
+        printf("--------------------------------------------------------------------------------------------------------------------------|\n");
     }
-    printf("+------------------------------------------------------+\n");
 }
 
 void
