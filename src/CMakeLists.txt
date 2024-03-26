@@ -1,9 +1,11 @@
 set(MDMLD_SOURCE_FILES
-        test.c
+        ./mld.c
 )
 
 set(MDMLD_HEADER_FILES
         ../include/mdmld/md_api.h
+        ../include/mdmld/mdmld.h
+        ../include/mdmld/mld.h
 )
 
 add_library(mdmld ${MDMLD_SOURCE_FILES} ${MDMLD_HEADER_FILES} )
